@@ -12,8 +12,8 @@ import com.jsp.warehouse.utility.ResponseStructure;
 public class WarehouseServiceimpl implements WarehouseService{
 
 	@Override
-	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(WarehouseRequset warehouse) {
-		
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse() {
+		return null;
 	}
 
 }

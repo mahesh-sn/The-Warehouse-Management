@@ -25,8 +25,8 @@ public class Admin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int adminId;
-	private String adminName;
-	private String adminEmail;
+	private String name;
+	private String email;
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private AdminType adminType;
