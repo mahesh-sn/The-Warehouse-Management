@@ -13,7 +13,7 @@ import com.jsp.warehouse.service.WarehouseService;
 import com.jsp.warehouse.utility.ResponseStructure;
 
 @RestControllerAdvice
-//@RequestMapping("/api/version1")
+@RequestMapping("/api/version1")
 public class WarehouseController {
 	@Autowired
 	private WarehouseService warehouseService;
