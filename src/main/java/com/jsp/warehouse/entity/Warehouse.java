@@ -22,7 +22,7 @@ public class Warehouse {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int warehouseId;
 	private String warehouseName;
-	@OneToOne(mappedBy ="warehouse" )
+	@OneToOne
 	private Admin admin;
 
 }

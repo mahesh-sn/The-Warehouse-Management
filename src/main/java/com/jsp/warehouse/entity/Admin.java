@@ -8,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +29,4 @@ public class Admin {
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private AdminType adminType;
-	@OneToOne
-	private Warehouse warehouse;
 }

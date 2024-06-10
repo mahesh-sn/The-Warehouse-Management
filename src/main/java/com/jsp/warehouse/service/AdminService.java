@@ -10,6 +10,6 @@ public interface AdminService {
 
 	ResponseEntity<ResponseStructure<AdminResponse>> saveSuperAdmin(AdminRequest adminRequest);
 
-	ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(AdminRequest adminRequest);
+	ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(AdminRequest adminRequest, int warehouseId);
 	
 }

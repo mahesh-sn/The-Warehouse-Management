@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.jsp.warehouse.exception.IllegalOperationException;
+import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 
 @RestControllerAdvice
 public class ApplicationHandler {
@@ -28,6 +29,15 @@ public class ApplicationHandler {
 				.body(new ErrorStructure<String>()
 						.setMessage("Invalid Username given")
 						.setRootCause(ex.getMessage())
+						.setStatus(HttpStatus.NOT_FOUND.value()));
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByIdException(WarehouseNotFoundByIdException ex){
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorStructure<String>()
+						.setMessage(ex.getMessage())
+						.setRootCause("WareHouse with the given Id is not there")
 						.setStatus(HttpStatus.NOT_FOUND.value()));
 	}
 }

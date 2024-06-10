@@ -2,6 +2,7 @@ package com.jsp.warehouse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +23,9 @@ public class AdminController {
 	public ResponseEntity<ResponseStructure<AdminResponse>> saveSuperAdmin(@RequestBody AdminRequest adminRequest){
 		return adminService.saveSuperAdmin(adminRequest);
 	}
-	@PostMapping("/admins")
-	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(@RequestBody AdminRequest  adminRequest){
-		return adminService.createAdmins(adminRequest);
+	@PostMapping("warehouse/{warehouseId}/admins")
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(@RequestBody AdminRequest  adminRequest,@PathVariable int warehouseId){
+		return adminService.createAdmins(adminRequest,warehouseId);
 	}
 	
 	
