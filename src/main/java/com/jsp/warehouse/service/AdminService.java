@@ -8,6 +8,8 @@ import com.jsp.warehouse.utility.ResponseStructure;
 
 public interface AdminService {
 
-	ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(AdminRequest adminRequest);
+	ResponseEntity<ResponseStructure<AdminResponse>> saveSuperAdmin(AdminRequest adminRequest);
+
+	ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(AdminRequest adminRequest);
 	
 }

@@ -23,7 +23,7 @@ public class AdminServiceImpl implements  AdminService{
 	private AdminMapper adminMapper; 
 	
 	@Override
-	public ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(AdminRequest adminRequest) {
+	public ResponseEntity<ResponseStructure<AdminResponse>> saveSuperAdmin(AdminRequest adminRequest) {
 		if(adminRepo.existsByAdminType(AdminType.SUPER_ADMIN)) {
 			throw new IllegalOperationException("Illegal Operation to add a Supre Admin");
 		}else {
@@ -37,5 +37,11 @@ public class AdminServiceImpl implements  AdminService{
 							.setMessage("Admin Saved Successfully")
 							.setStatus(HttpStatus.CREATED.value()));
 		}
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(AdminRequest adminRequest) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
