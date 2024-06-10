@@ -15,7 +15,7 @@ import lombok.Setter;
 @Builder
 public class AdminResponse {
 	private int adminId;
-	private String adminName;
-	private String adminEmail;
+	private String name;
+	private String email;
 	private AdminType adminType;
 }

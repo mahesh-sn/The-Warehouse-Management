@@ -8,6 +8,6 @@ import com.jsp.warehouse.utility.ResponseStructure;
 
 public interface WarehouseService {
 
-	ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(WarehouseRequset warehouse);
+	ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse();
 
 }
