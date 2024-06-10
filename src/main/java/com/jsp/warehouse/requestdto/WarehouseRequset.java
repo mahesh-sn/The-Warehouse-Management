@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WarehouseRequset {
-	private String warehouseName;
+	private String name;
 }
