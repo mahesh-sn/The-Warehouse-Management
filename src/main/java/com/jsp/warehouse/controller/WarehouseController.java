@@ -2,24 +2,29 @@ package com.jsp.warehouse.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.warehouse.mapper.WarehouseMapper;
 import com.jsp.warehouse.requestdto.WarehouseRequset;
 import com.jsp.warehouse.responsedto.WarehouseResponse;
 import com.jsp.warehouse.service.WarehouseService;
 import com.jsp.warehouse.utility.ResponseStructure;
 
-@RestControllerAdvice
+@RestController
 @RequestMapping("/api/version1")
 public class WarehouseController {
 	@Autowired
 	private WarehouseService warehouseService;
-	
-	@GetMapping("/warehouses")
-	public String createWarehouse(){
-		return "Warehouse Found";
+
+	@PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
+	@PostMapping("/warehouses")
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(@RequestBody WarehouseRequset warehouseRequset) {
+		return warehouseService.createWarehouse(warehouseRequset);
 	}
 }

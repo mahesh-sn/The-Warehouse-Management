@@ -2,14 +2,19 @@ package com.jsp.warehouse.serviceimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.warehouse.entity.Admin;
 import com.jsp.warehouse.enums.AdminType;
+import com.jsp.warehouse.exception.AdminNotFoundByEmailException;
 import com.jsp.warehouse.exception.IllegalOperationException;
+import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 import com.jsp.warehouse.mapper.AdminMapper;
 import com.jsp.warehouse.repo.AdminRepo;
+import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.AdminRequest;
 import com.jsp.warehouse.responsedto.AdminResponse;
 import com.jsp.warehouse.service.AdminService;
@@ -21,9 +26,11 @@ public class AdminServiceImpl implements  AdminService{
 	private AdminRepo adminRepo;
 	@Autowired
 	private AdminMapper adminMapper; 
-	
+	@Autowired
+	private WarehouseRepo warehouseRepo;
+
 	@Override
-	public ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(AdminRequest adminRequest) {
+	public ResponseEntity<ResponseStructure<AdminResponse>> saveSuperAdmin(AdminRequest adminRequest) {
 		if(adminRepo.existsByAdminType(AdminType.SUPER_ADMIN)) {
 			throw new IllegalOperationException("Illegal Operation to add a Supre Admin");
 		}else {
@@ -38,4 +45,52 @@ public class AdminServiceImpl implements  AdminService{
 							.setStatus(HttpStatus.CREATED.value()));
 		}
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmins(AdminRequest adminRequest,int warehouseId) {
+		return warehouseRepo.findById(warehouseId).map(warehouse->{
+			Admin admin = adminMapper.mapToAdmin(adminRequest, new Admin());
+			admin.setAdminType(AdminType.ADMIN);
+			
+			admin=adminRepo.save(admin);
+			
+			warehouse.setAdmin(admin);
+			warehouseRepo.save(warehouse);
+			
+			return ResponseEntity
+					.status(HttpStatus.CREATED)
+					.body(new ResponseStructure<AdminResponse>()
+							.setData(adminMapper.mapToAdminResponse(admin))
+							.setMessage("Admin Created")
+							.setStatus(HttpStatus.CREATED.value()));
+		}).orElseThrow(()->new WarehouseNotFoundByIdException("Invalid WareHouse"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> UpdateAdimin(AdminRequest adminRequest) {
+		String email=SecurityContextHolder.getContext().getAuthentication().getName();
+		return adminRepo.findByEmail(email).map(admin->{
+			admin=adminMapper.mapToAdmin(adminRequest, admin);
+			admin=adminRepo.save(admin);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<AdminResponse>()
+							.setData(adminMapper.mapToAdminResponse(admin))
+							.setMessage("Updated sucessfully")
+							.setStatus(HttpStatus.OK.value()));
+		}).orElseThrow(()->new AdminNotFoundByEmailException("Illegal Operation"));
+		
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+

@@ -21,8 +21,8 @@ public class Warehouse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int warehouseId;
-	private String warehouseName;
-	@OneToOne(mappedBy ="warehouse" )
+	private String name;
+	@OneToOne
 	private Admin admin;
 
 }
