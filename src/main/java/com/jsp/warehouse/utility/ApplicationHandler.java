@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.warehouse.exception.AdminNotFoundByEmailException;
 import com.jsp.warehouse.exception.IllegalOperationException;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 
@@ -40,4 +41,17 @@ public class ApplicationHandler {
 						.setRootCause("WareHouse with the given Id is not there")
 						.setStatus(HttpStatus.NOT_FOUND.value()));
 	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAdminNotFoundByEmailException (AdminNotFoundByEmailException  ex){
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorStructure<String>()
+						.setMessage(ex.getMessage())
+						.setRootCause("Email Invalid")
+						.setStatus(HttpStatus.NOT_FOUND.value()));
+	}
+	
+	
+	
+	
 }

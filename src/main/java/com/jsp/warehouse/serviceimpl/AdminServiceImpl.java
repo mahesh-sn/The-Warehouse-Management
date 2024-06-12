@@ -2,11 +2,14 @@ package com.jsp.warehouse.serviceimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.jsp.warehouse.entity.Admin;
 import com.jsp.warehouse.enums.AdminType;
+import com.jsp.warehouse.exception.AdminNotFoundByEmailException;
 import com.jsp.warehouse.exception.IllegalOperationException;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 import com.jsp.warehouse.mapper.AdminMapper;
@@ -61,6 +64,24 @@ public class AdminServiceImpl implements  AdminService{
 							.setMessage("Admin Created")
 							.setStatus(HttpStatus.CREATED.value()));
 		}).orElseThrow(()->new WarehouseNotFoundByIdException("Invalid WareHouse"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> UpdateAdimin(AdminRequest adminRequest) {
+		String email=SecurityContextHolder.getContext().getAuthentication().getName();
+		return adminRepo.findByEmail(email).map(admin->{
+			admin=adminMapper.mapToAdmin(adminRequest, admin);
+			admin=adminRepo.save(admin);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<AdminResponse>()
+							.setData(adminMapper.mapToAdminResponse(admin))
+							.setMessage("Updated sucessfully")
+							.setStatus(HttpStatus.OK.value()));
+		}).orElseThrow(()->new AdminNotFoundByEmailException("Illegal Operation"));
+		
+		
 	}
 }
 
