@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.warehouse.entity.Warehouse;
+import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 import com.jsp.warehouse.mapper.WarehouseMapper;
 import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.WarehouseRequset;
@@ -35,4 +36,27 @@ public class WarehouseServiceimpl implements WarehouseService{
 						.setStatus(HttpStatus.CREATED.value()));
 
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(int warehouseId) {
+		return warehouseRepo.findById(warehouseId).map(warehouse->{
+			
+			return ResponseEntity
+					.status(HttpStatus.FOUND)
+					.body(new ResponseStructure<WarehouseResponse>()
+							.setData(warehouseMapper.mapToWarehouseResponse(warehouse))
+							.setMessage("Found All WareHouses Details")
+							.setStatus(HttpStatus.FOUND.value()));
+		
+		}).orElseThrow(()->new WarehouseNotFoundByIdException("Invalid WareHouse"));
+
+	}
 }
+
+
+
+
+
+
+
+
