@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.jsp.warehouse.exception.AdminNotFoundByEmailException;
 import com.jsp.warehouse.exception.IllegalOperationException;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
+import com.jsp.warehouse.exception4.AddressNotFoundByIdException;
 
 @RestControllerAdvice
 public class ApplicationHandler {
@@ -50,8 +51,27 @@ public class ApplicationHandler {
 						.setRootCause("Email Invalid")
 						.setStatus(HttpStatus.NOT_FOUND.value()));
 	}
-	
-	
-	
-	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAddressNotFoundByIdException(AddressNotFoundByIdException ex){
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorStructure<String>()
+						.setMessage(ex.getMessage())
+						.setRootCause("Invalid AddressId entered")
+						.setStatus(HttpStatus.NOT_FOUND.value()));
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
