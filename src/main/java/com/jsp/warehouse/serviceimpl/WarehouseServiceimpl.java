@@ -54,6 +54,18 @@ public class WarehouseServiceimpl implements WarehouseService{
 
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findAllWarehouses() {
+		List<WarehouseResponse> warehouseResponses= warehouseRepo.findAll().stream().map(warehouses->
+		warehouseMapper.mapToWarehouseResponse(warehouses)).toList();
+
+		return ResponseEntity
+				.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<WarehouseResponse>>()
+						.setData(warehouseResponses)
+						.setMessage("Warehouses Found")
+						.setStatus(HttpStatus.FOUND.value()));
+	}
 }
 
 

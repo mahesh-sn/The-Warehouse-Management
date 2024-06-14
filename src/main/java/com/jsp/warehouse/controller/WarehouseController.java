@@ -34,5 +34,9 @@ public class WarehouseController {
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(@PathVariable int warehouseId) {
 		return warehouseService.findWarehouse(warehouseId);
 	}
+	@GetMapping()
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findAllWarehouses(){
+		return warehouseService.findAllWarehouses();
+	}
 	
 }
