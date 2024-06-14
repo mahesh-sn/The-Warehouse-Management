@@ -15,4 +15,6 @@ public class WarehouseResponse {
 	private int warehouseId;
 	private String name;
 	private int totalCapacity;
+	
+	private AddressResponse addressResponse;
 }

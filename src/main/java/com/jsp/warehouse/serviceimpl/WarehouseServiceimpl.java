@@ -14,7 +14,6 @@ import com.jsp.warehouse.mapper.WarehouseMapper;
 import com.jsp.warehouse.repo.AddressRepo;
 import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.WarehouseRequset;
-import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 import com.jsp.warehouse.responsedto.WarehouseResponse;
 import com.jsp.warehouse.service.WarehouseService;
 import com.jsp.warehouse.utility.ResponseStructure;
@@ -73,15 +72,15 @@ public class WarehouseServiceimpl implements WarehouseService{
 						.setStatus(HttpStatus.FOUND.value()));
 	}
 	@Override
-	public ResponseEntity<ResponseStructure<List<WarehouseAddressResponse>>> findWarehouseByCity(String city) {
-		List<WarehouseAddressResponse> cities= addressRepo.findByCity(city).stream().map(address->
-		warehouseMapper.mapToWarehouseAddressResponse(address.getWarehouse(),address)).toList();
+	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehouseByCity(String city) {
+		List<WarehouseResponse> cities= addressRepo.findByCity(city).stream().map(address->
+		warehouseMapper.mapToWarehouseResponse(address.getWarehouse(),address)).toList();
 		if(cities.isEmpty()) {
 			throw new WareHouseInCityNotFoundException("Invalid City");
 		}else {
 			return ResponseEntity
 					.status(HttpStatus.FOUND)
-					.body(new ResponseStructure<List<WarehouseAddressResponse>>()
+					.body(new ResponseStructure<List<WarehouseResponse>>()
 							.setMessage("Warehouse Address and Warehouse Id fopund")
 							.setStatus(HttpStatus.FOUND.value())
 							.setData(cities));

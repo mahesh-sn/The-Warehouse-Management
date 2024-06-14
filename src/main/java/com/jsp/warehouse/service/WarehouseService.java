@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.warehouse.requestdto.WarehouseRequset;
-import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 import com.jsp.warehouse.responsedto.WarehouseResponse;
 import com.jsp.warehouse.utility.ResponseStructure;
 
@@ -17,6 +16,6 @@ public interface WarehouseService {
 	
 	ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findAllWarehouses();
 
-	ResponseEntity<ResponseStructure<List<WarehouseAddressResponse>>> findWarehouseByCity(String city);
+	ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findWarehouseByCity(String city);
 
 }

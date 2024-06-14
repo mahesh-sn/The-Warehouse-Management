@@ -1,7 +1,5 @@
 package com.jsp.warehouse.serviceimpl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,6 @@ import com.jsp.warehouse.repo.AddressRepo;
 import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.AddressRequest;
 import com.jsp.warehouse.responsedto.AddressResponse;
-import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 import com.jsp.warehouse.service.AddressService;
 import com.jsp.warehouse.utility.ResponseStructure;
 

@@ -3,10 +3,8 @@ package com.jsp.warehouse.mapper;
 import org.springframework.stereotype.Component;
 
 import com.jsp.warehouse.entity.Address;
-import com.jsp.warehouse.entity.Warehouse;
 import com.jsp.warehouse.requestdto.AddressRequest;
 import com.jsp.warehouse.responsedto.AddressResponse;
-import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 
 @Component
 public class AddressMapper {
