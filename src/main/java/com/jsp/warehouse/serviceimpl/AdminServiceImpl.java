@@ -1,5 +1,7 @@
 package com.jsp.warehouse.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.jsp.warehouse.entity.Admin;
 import com.jsp.warehouse.enums.AdminType;
 import com.jsp.warehouse.exception.AdminNotFoundByEmailException;
+import com.jsp.warehouse.exception.AdminNotFoundByIdException;
 import com.jsp.warehouse.exception.IllegalOperationException;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 import com.jsp.warehouse.mapper.AdminMapper;
@@ -51,18 +54,19 @@ public class AdminServiceImpl implements  AdminService{
 		return warehouseRepo.findById(warehouseId).map(warehouse->{
 			Admin admin = adminMapper.mapToAdmin(adminRequest, new Admin());
 			admin.setAdminType(AdminType.ADMIN);
-			
+
 			admin=adminRepo.save(admin);
-			
+
 			warehouse.setAdmin(admin);
 			warehouseRepo.save(warehouse);
-			
+
 			return ResponseEntity
 					.status(HttpStatus.CREATED)
 					.body(new ResponseStructure<AdminResponse>()
 							.setData(adminMapper.mapToAdminResponse(admin))
 							.setMessage("Admin Created")
 							.setStatus(HttpStatus.CREATED.value()));
+			
 		}).orElseThrow(()->new WarehouseNotFoundByIdException("Invalid WareHouse"));
 	}
 
@@ -72,7 +76,7 @@ public class AdminServiceImpl implements  AdminService{
 		return adminRepo.findByEmail(email).map(admin->{
 			admin=adminMapper.mapToAdmin(adminRequest, admin);
 			admin=adminRepo.save(admin);
-			
+
 			return ResponseEntity
 					.status(HttpStatus.OK)
 					.body(new ResponseStructure<AdminResponse>()
@@ -80,9 +84,47 @@ public class AdminServiceImpl implements  AdminService{
 							.setMessage("Updated sucessfully")
 							.setStatus(HttpStatus.OK.value()));
 		}).orElseThrow(()->new AdminNotFoundByEmailException("Illegal Operation"));
-		
-		
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdiminBySuperAdmin(AdminRequest adminRequest,
+			int adminId) {
+		return adminRepo.findById(adminId).map(admin->{
+			admin = adminRepo.save(adminMapper.mapToAdmin(adminRequest, admin));
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<AdminResponse>()
+							.setData(adminMapper.mapToAdminResponse(admin))
+							.setMessage("Admin Updated")
+							.setStatus(HttpStatus.OK.value()));
+		}).orElseThrow(()->new AdminNotFoundByIdException("Invalid Id"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdminById(int adminId) {
+		return adminRepo.findById(adminId).map(admin->{
+			return ResponseEntity
+					.status(HttpStatus.FOUND)
+					.body(new ResponseStructure<AdminResponse>()
+							.setData(adminMapper.mapToAdminResponse(admin))
+							.setMessage("Admin Details with the Id:"+adminId+" found")
+							.setStatus(HttpStatus.FOUND.value()));							
+		}).orElseThrow(()->new AdminNotFoundByIdException("Invalid Id"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins() {
+		List<AdminResponse>adminResponses= adminRepo.findByAdminType(AdminType.ADMIN).stream().map(admins->
+		adminMapper.mapToAdminResponse(admins)).toList();
+
+		return ResponseEntity
+				.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<AdminResponse>>()
+						.setData(adminResponses)
+						.setMessage("All Admin Details Found")
+						.setStatus(HttpStatus.FOUND.value()));
+	}
+
 }
 
 
