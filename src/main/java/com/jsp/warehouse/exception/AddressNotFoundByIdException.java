@@ -1,4 +1,4 @@
-package com.jsp.warehouse.exception4;
+package com.jsp.warehouse.exception;
 
 public class AddressNotFoundByIdException extends RuntimeException{
 	private String message;

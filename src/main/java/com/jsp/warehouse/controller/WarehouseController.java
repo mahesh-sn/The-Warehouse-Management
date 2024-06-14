@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jsp.warehouse.requestdto.WarehouseRequset;
+import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 import com.jsp.warehouse.responsedto.WarehouseResponse;
 import com.jsp.warehouse.service.WarehouseService;
 import com.jsp.warehouse.utility.ResponseStructure;
@@ -34,9 +35,13 @@ public class WarehouseController {
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> findWarehouse(@PathVariable int warehouseId) {
 		return warehouseService.findWarehouse(warehouseId);
 	}
-	@GetMapping()
+	@GetMapping("/warehouses")
 	public ResponseEntity<ResponseStructure<List<WarehouseResponse>>> findAllWarehouses(){
 		return warehouseService.findAllWarehouses();
+	}
+	@GetMapping("cities/{city}/warehouses")
+	public ResponseEntity<ResponseStructure<List<WarehouseAddressResponse>>> findWarehouseByCity(@PathVariable String city){
+		return warehouseService.findWarehouseByCity(city);
 	}
 	
 }

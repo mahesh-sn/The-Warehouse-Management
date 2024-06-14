@@ -9,12 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.warehouse.entity.Storage;
+import com.jsp.warehouse.exception.StorageNotFoundException;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
 import com.jsp.warehouse.mapper.StorageMapper;
 import com.jsp.warehouse.repo.StorageRepo;
 import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.StorageRequest;
+import com.jsp.warehouse.responsedto.StorageResponse;
 import com.jsp.warehouse.service.StorageService;
+import com.jsp.warehouse.utility.ResponseStructure;
 import com.jsp.warehouse.utility.SimpleResponseStructure;
 
 @Service
@@ -57,6 +60,22 @@ public class StorageServiceImpl implements StorageService{
 							.setMessage("Storage Created")
 							.setStatus(HttpStatus.CREATED.value()));
 		}).orElseThrow(()->new WarehouseNotFoundByIdException("Invalid WareHouse"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(StorageRequest storageRequest, int storageId) {
+		return storageRepo.findById(storageId).map(storage->{
+			storage=storageMapper.mapToStorage(storageRequest, storage);
+			
+			storageRepo.save(storage);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<StorageResponse>()
+							.setData(storageMapper.mapToStorageResponse(storage))
+							.setMessage("Storage Updated")
+							.setStatus(HttpStatus.OK.value()));
+		}).orElseThrow(()-> new StorageNotFoundException("Invalid Storage"));
 	}
 }
 

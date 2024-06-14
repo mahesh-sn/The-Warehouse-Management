@@ -1,5 +1,7 @@
 package com.jsp.warehouse.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -8,12 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.jsp.warehouse.entity.Address;
 import com.jsp.warehouse.exception.WarehouseNotFoundByIdException;
-import com.jsp.warehouse.exception4.AddressNotFoundByIdException;
+import com.jsp.warehouse.exception.AddressNotFoundByIdException;
 import com.jsp.warehouse.mapper.AddressMapper;
 import com.jsp.warehouse.repo.AddressRepo;
 import com.jsp.warehouse.repo.WarehouseRepo;
 import com.jsp.warehouse.requestdto.AddressRequest;
 import com.jsp.warehouse.responsedto.AddressResponse;
+import com.jsp.warehouse.responsedto.WarehouseAddressResponse;
 import com.jsp.warehouse.service.AddressService;
 import com.jsp.warehouse.utility.ResponseStructure;
 
@@ -64,17 +67,17 @@ public class AddressServiceImpl implements AddressService{
 	@Override
 	public ResponseEntity<ResponseStructure<AddressResponse>> updateAddress(AddressRequest addressRequest,int addressId) {
 		return addressRepo.findById(addressId).map(address->{
+			
 			address = addressMapper.mapToAddress(addressRequest, address);
 			addressRepo.save(address);
+			
 			return ResponseEntity
 					.status(HttpStatus.OK)
 					.body(new ResponseStructure<AddressResponse>()
 							.setData(addressMapper.mapToAddressResponse(address))
 							.setMessage("Address Updated")
 							.setStatus(HttpStatus.OK.value()));
+		
 		}).orElseThrow(()->new AddressNotFoundByIdException("Invalid Address"));
 	}
-	
-	
-	
 }
