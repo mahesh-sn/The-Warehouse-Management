@@ -9,12 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class WarehouseResponse {
-	private int warehouseId;
-	private String name;
-	private int totalCapacity;
-	
-	private AddressResponse addressResponse;
+@NoArgsConstructor
+public class ClientResponse {
+	private int clientId;
+	private String businessName;
+	private String email;
+	private long contactNumber;
 }
