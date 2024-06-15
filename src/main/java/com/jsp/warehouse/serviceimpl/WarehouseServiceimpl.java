@@ -33,6 +33,7 @@ public class WarehouseServiceimpl implements WarehouseService{
 	public ResponseEntity<ResponseStructure<WarehouseResponse>> createWarehouse(WarehouseRequset warehouseRequset) {
 
 		Warehouse warehouse = warehouseMapper.mapToWarehouse(warehouseRequset, new Warehouse());
+		warehouse.setTotalCapacityInKg(0);
 		warehouse= warehouseRepo.save(warehouse);
 
 		return ResponseEntity
